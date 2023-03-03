@@ -2,10 +2,12 @@ import { DeleteOutlineOutlined } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import ConfirmOrder from "../../components/ConfirmOrder";
 import CustomError from "../../components/Error";
 import rupiahFormater from "../../helpers/rupiahFormater";
 import useCart from "../../hooks/useCart";
 import { deleteItem } from "../../redux/cart/cartSlice";
+import ReactDOM from "react-dom";
 
 export default function Cart() {
   const { products } = useCart();
@@ -18,7 +20,13 @@ export default function Cart() {
     return () => {};
   }, [products]);
 
-  const createOrder = () => {}
+  const createOrder = () => {};
+
+  const openModal = () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    ReactDOM.render(<ConfirmOrder />, container);
+  };
 
   return !products.length ? (
     <CustomError title={"Oopss!"} description={"sorry no items here."} />
@@ -76,7 +84,10 @@ export default function Cart() {
               {rupiahFormater(subTotal)}
             </p>
           </div>
-          <button onClick={createOrder} className="w-full bg-gray-900 text-white py-5 rounded-lg font-semibold ">
+          <button
+            onClick={openModal}
+            className="w-full bg-gray-900 text-white py-5 rounded-lg font-semibold "
+          >
             Place Order
           </button>
         </div>

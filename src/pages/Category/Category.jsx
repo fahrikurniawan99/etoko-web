@@ -21,6 +21,8 @@ export default function Category() {
     setSubCategory(null);
   };
 
+
+
   return (
     <div className="lg:grid mx-auto container grid-cols-4">
       <div className="col-span-1 border-r filter__category">
