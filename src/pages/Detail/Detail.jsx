@@ -55,7 +55,7 @@ const Modal = () => {
 export default function Detail() {
   const { slug } = useParams();
   const { data } = useFetch(
-    `/api/products?populate=*&filters[Slug][$eq]=${slug}`
+    `/api/products?populate=*&filters[slug][$eq]=${slug}`
   );
   const dispatch = useDispatch();
   const { products } = useCart();
@@ -66,12 +66,12 @@ export default function Detail() {
     id: item?.id,
     title: item?.attributes?.title,
     price:
-      item?.attributes?.discount_price > 0
-        ? item?.attributes?.discount_price
+      item?.attributes?.priceDiscount > 0
+        ? item?.attributes?.priceDiscount
         : item?.attributes?.price,
     category: item?.attributes?.category?.data?.attributes?.title,
     img: item?.attributes?.img?.data?.attributes?.formats?.thumbnail?.url,
-    slug: item?.attributes?.Slug,
+    slug: item?.attributes?.slug,
   };
 
   const handleOnClick = () => {
@@ -112,10 +112,10 @@ export default function Detail() {
       <div className="w-full flex flex-col lg:flex-row mt-5">
         <img
           alt="product"
-          src={`${import.meta.env.VITE_BASE_URL}${
+          src={
             data?.data[0]?.attributes?.img?.data?.attributes?.formats?.small
               ?.url
-          }`}
+          }
           className="w-[600px] h-[500px] object-cover"
         />
         <div className="lg:ml-10 mt-10 lg:mt-0">
@@ -123,10 +123,10 @@ export default function Detail() {
             {data?.data[0]?.attributes?.title}
           </h1>
           <h2 className="text-gray-700 font-semibold text-3xl mt-3 flex items-start gap-1">
-            {data?.data[0]?.attributes?.discount_price > 0
-              ? rupiahFormater(data?.data[0]?.attributes.discount_price)
+            {data?.data[0]?.attributes?.priceDiscount > 0
+              ? rupiahFormater(data?.data[0]?.attributes.priceDiscount)
               : rupiahFormater(data?.data[0]?.attributes.price)}
-            {data?.data[0]?.attributes?.discount_price > 0 && (
+            {data?.data[0]?.attributes?.priceDiscount > 0 && (
               <span className="text-gray-400 line-through font-normal text-xl">
                 {rupiahFormater(data?.data[0]?.attributes.price)}
               </span>

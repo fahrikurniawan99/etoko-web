@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import rupiahFormater from "../helpers/rupiahFormater";
 
-export default function Card({ urlImage, slug, title, discount_price, price }) {
+export default function Card({ urlImage, slug, title, priceDiscount, price }) {
   const navigate = useNavigate();
   return (
     <div
@@ -10,7 +10,7 @@ export default function Card({ urlImage, slug, title, discount_price, price }) {
       onClick={() => navigate(`/product/${slug}`)}
     >
       <img
-        src={import.meta.env.VITE_BASE_URL + urlImage}
+        src={urlImage}
         alt="thumbnail"
         className="object-cover h-[300px] w-full rounded-lg"
       />
@@ -18,12 +18,10 @@ export default function Card({ urlImage, slug, title, discount_price, price }) {
         {title}
       </h1>
       <p className="text-gray-800 font-medium">
-        {discount_price
-          ? rupiahFormater(discount_price)
-          : rupiahFormater(price)}
+        {priceDiscount ? rupiahFormater(priceDiscount) : rupiahFormater(price)}
         <span
           className={[
-            discount_price ? "inline-block" : "hidden",
+            priceDiscount ? "inline-block" : "hidden",
             "ml-1 text-gray-300 line-through font-normal",
           ].join(" ")}
         >

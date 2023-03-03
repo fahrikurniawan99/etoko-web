@@ -28,9 +28,7 @@ export default function Categories() {
               <img
                 alt="categories"
                 className="w-full h-full object-cover"
-                src={`${import.meta.env.VITE_BASE_URL}${
-                  value.attributes.img.data.attributes.formats.small.url
-                }`}
+                src={value.attributes.img.data.attributes.formats.small.url}
               />
             </div>
           ))}

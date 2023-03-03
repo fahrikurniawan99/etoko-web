@@ -25,9 +25,9 @@ export default function Featured() {
             return (
               <Card
                 key={index}
-                slug={item?.Slug}
+                slug={item?.slug}
                 urlImage={item?.img?.data?.attributes?.formats?.small?.url}
-                discount_price={item?.discount_price}
+                priceDiscount={item?.priceDiscount}
                 price={item?.price}
                 title={item?.title}
               />

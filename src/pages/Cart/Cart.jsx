@@ -31,7 +31,7 @@ export default function Cart() {
               <div className="flex relative mb-5 w-[600px]" key={value.id}>
                 <Link to={`/product/${value.slug}`}>
                   <img
-                    src={`${import.meta.env.VITE_BASE_URL}${value.img}`}
+                    src={value.img}
                     alt="product"
                     className="h-20 w-20 rounded-md"
                   />
