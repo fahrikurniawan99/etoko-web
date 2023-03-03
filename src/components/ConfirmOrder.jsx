@@ -11,7 +11,7 @@ export default function ConfirmOrder({ back, next }) {
         <h1 className="font-semibold tracking-tight text-xl text-gray-700 text-center mt-4">
           Seleaikan pesanan kamu!
         </h1>
-        <p className="text-gray-500 leading-relaxed tracking-tight mt-2">
+        <p className="text-gray-500 leading-relaxed tracking-tight mt-2 text-center">
           Masukan <span className="text-gray-700 font-medium">detail</span>{" "}
           pesanan <span className="text-gray-700 font-medium">penerima</span>,
           Terimakasih.
