@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import ConfirmOrder from "../../components/ConfirmOrder";
+import ConfirmPayment from "../../components/ConfirmPayment";
 import CustomError from "../../components/Error";
 import rupiahFormater from "../../helpers/rupiahFormater";
 import useCart from "../../hooks/useCart";
 import { deleteItem } from "../../redux/cart/cartSlice";
 import ReactDOM from "react-dom";
+import Steper from "../../components/Steper";
 
 export default function Cart() {
   const { products } = useCart();
@@ -20,12 +22,11 @@ export default function Cart() {
     return () => {};
   }, [products]);
 
-  const createOrder = () => {};
-
   const openModal = () => {
     const container = document.createElement("div");
+    container.setAttribute("id", "modal-contianer");
     document.body.appendChild(container);
-    ReactDOM.render(<ConfirmOrder />, container);
+    ReactDOM.render(<Steper />, container);
   };
 
   return !products.length ? (
