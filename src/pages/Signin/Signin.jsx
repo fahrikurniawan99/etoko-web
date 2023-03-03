@@ -33,7 +33,6 @@ export default function SignIn() {
     });
     dispatch(solveError());
     await dispatch(login(form));
-    navigate("/");
   };
 
   return (

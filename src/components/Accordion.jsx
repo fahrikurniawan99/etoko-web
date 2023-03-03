@@ -9,7 +9,7 @@ export default function Accordion({
   active,
 }) {
   return (
-    <div className={["py-4", index > 1 ? "border-t" : ""].join(" ")}>
+    <div className={["py-4 px-2 lg:px-0", index > 1 ? "border-t" : ""].join(" ")}>
       <h1
         onClick={() => toggleAccordion(index === active ? 0 : index)}
         className="flex justify-between items-center cursor-pointer text-gray-900 font-semibold"

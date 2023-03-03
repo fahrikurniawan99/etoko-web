@@ -71,6 +71,7 @@ const authSlice = createSlice({
       state.errorMessage = "";
       state.user = action.payload;
       state.isLogin = true;
+      window.location.href = "/";
     });
     builder.addCase(login.rejected, (state, action) => {
       state.isLogin = false;

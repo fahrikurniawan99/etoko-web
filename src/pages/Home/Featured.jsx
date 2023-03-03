@@ -14,7 +14,7 @@ export default function Featured() {
 
   return (
     <div className="flex w-full lg:justify-between my-10 flex-wrap justify-center">
-      <div className="grid grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-10">
         {!data?.data.length ? (
           <div className="text-center col-span-3">
             <p>Product not found</p>

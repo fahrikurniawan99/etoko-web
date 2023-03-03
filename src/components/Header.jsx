@@ -29,7 +29,7 @@ export default function Header() {
   };
 
   return (
-    <div className="sticky top-0 z-50 bg-white">
+    <div className="sticky top-0 z-50 bg-white px-2 lg:px-0">
       <div className="flex container mx-auto h-16 items-center relative">
         <div
           className={[

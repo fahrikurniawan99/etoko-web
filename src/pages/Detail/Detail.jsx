@@ -95,7 +95,7 @@ export default function Detail() {
     </div>
   ) : (
     <div className="container lg:mb-10  mx-auto" id="detail-product">
-      <div className="h-14 w-full border-y flex items-center gap-1">
+      <div className="h-14 w-full border-y flex items-center gap-1 px-2 lg:px-0">
         <Link to={"/"} className="text-gray-900 font-medium">
           Home
         </Link>
@@ -109,7 +109,7 @@ export default function Detail() {
         <span className="text-gray-500">&gt;</span>
         <p className="text-gray-500">{slug}</p>
       </div>
-      <div className="w-full flex flex-col lg:flex-row mt-5">
+      <div className="w-full flex flex-col lg:flex-row mt-5 px-2 lg:px-0">
         <img
           alt="product"
           src={
