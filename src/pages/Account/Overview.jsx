@@ -7,7 +7,7 @@ import React from "react";
 export default function Overview({ setIsOpen }) {
   return (
     <>
-      <h1 className="font-semibold text-gray-800 tracking-tight text-2xl mt-3">
+      <h1 className="font-semibold text-gray-800 tracking-tight text-2xl">
         Ringkasan
       </h1>
       <p className="text-gray-400 tracking-tight">

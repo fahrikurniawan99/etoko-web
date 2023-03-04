@@ -59,7 +59,7 @@ export default function Header() {
         </Link>
         <div className="flex items-center lg:ml-16 lg:gap-5 gap-2 ml-auto text-sm lg:text-nbase">
           {isLogin ? (
-            <Link to={`/account`} className="text-gray-500">
+            <Link to={`/account/`} className="text-gray-500">
               Account
             </Link>
           ) : (
