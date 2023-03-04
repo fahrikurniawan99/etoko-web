@@ -9,6 +9,10 @@ import AuthLayout from "./components/AuthLayout";
 import SignIn from "./pages/Signin/Signin";
 import SignUp from "./pages/Signup/Signup";
 import Category from "./pages/Category/Category";
+import Account from "./pages/Account/Account";
+import Overview from "./pages/Account/Overview";
+import Order from "./pages/Account/Order";
+import Setting from "./pages/Account/Setting";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -39,10 +43,9 @@ export default function App() {
           children: [{ path: "/signup", element: <SignUp /> }],
         },
         {
-          path:"products/:categoryid",
-          element: <Category />
-        }
-        ,
+          path: "/products/:categoryid",
+          element: <Category />,
+        },
         {
           path: "*",
           element: (
@@ -52,6 +55,15 @@ export default function App() {
             />
           ),
         },
+      ],
+    },
+    {
+      path: "/account",
+      element: <Account />,
+      children: [
+        { path: "/account", element: <Overview /> },
+        { path: "/account/order", element: <Order /> },
+        { path: "/account/setting", element: <Setting /> },
       ],
     },
   ]);
