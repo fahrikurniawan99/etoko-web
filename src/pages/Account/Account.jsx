@@ -13,10 +13,10 @@ export default function Account() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="mx-auto container dashboard-container overflow-hidden lg:flex">
+    <div className="mx-auto container dashboard-container overflow-hidden lg:flex py-3">
       <div
         className={[
-          "left h-full flex-col bg-gray-200 justify-between relative",
+          "left h-full flex-col bg-gray-200 justify-between relative rounded-xl",
           isOpen ? "flex" : "hidden lg:flex",
         ].join(" ")}
       >
@@ -87,7 +87,7 @@ export default function Account() {
           <Menu fontSize="large" onClick={() => setIsOpen(true)} />
         </div>
         <div className="px-2 lg:px-0">
-          <div className="h-14 border-y flex gap-1 items-center lg:hidden">
+          <div className="h-14 border-y gap-1 items-center hidden">
             <button
               onClick={() => setIsOpen(true)}
               className="text-gray-900 font-medium"
