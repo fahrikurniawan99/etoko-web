@@ -61,7 +61,8 @@ export default function App() {
       path: "/account",
       element: <Account />,
       children: [
-        { path: "/account", element: <Overview /> },
+        { path: "/account/", element: <Setting /> },
+        { path: "/account/overview", element: <Overview /> },
         { path: "/account/order", element: <Order /> },
         { path: "/account/setting", element: <Setting /> },
       ],

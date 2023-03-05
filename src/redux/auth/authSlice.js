@@ -1,3 +1,4 @@
+import { NetworkLockedOutlined } from "@mui/icons-material";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import makeRequest from "../../lib/axiosInstance";
 
@@ -9,7 +10,12 @@ export const login = createAsyncThunk(
         identifier: email,
         password: password,
       });
-      return { username: data.user.username, email: data.user.email };
+      return {
+        username: data.user.username,
+        email: data.user.email,
+        id: data.user.id,
+        jwt: data.jwt,
+      };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -22,6 +28,8 @@ const authSlice = createSlice({
     user: {
       username: null,
       email: null,
+      id: null,
+      jwt: null,
     },
     isLoading: false,
     isLogin: false,
@@ -37,6 +45,8 @@ const authSlice = createSlice({
       state.user = {
         username: null,
         email: null,
+        id: null,
+        jwt: null,
       };
     },
     solveError: (state) => {
@@ -47,6 +57,8 @@ const authSlice = createSlice({
       state.user = {
         username: null,
         email: null,
+        id: null,
+        jwt: null,
       };
     },
     logout: (state) => {
@@ -57,6 +69,8 @@ const authSlice = createSlice({
       state.user = {
         username: null,
         email: null,
+        id: null,
+        jwt: null,
       };
       window.location.reload();
     },
@@ -81,6 +95,8 @@ const authSlice = createSlice({
       state.user = {
         username: null,
         email: null,
+        id: null,
+        jwt: null,
       };
     });
   },

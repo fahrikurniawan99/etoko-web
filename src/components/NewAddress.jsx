@@ -9,16 +9,21 @@ export default function NewAddress({ user }) {
   const [query, setQuery] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [tab, setTab] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const fetchData = useCallback(async () => {
-    try {
-      const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&addressdetails=1&limit=10`;
-      if (query !== null || "") {
+    if (query !== null || "") {
+      try {
+        setIsLoading(true);
+        const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&addressdetails=1&limit=10`;
         const res = await axios.get(url);
         setAddress(res.data);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        setIsError(true);
       }
-    } catch (error) {
-      console.log(error);
     }
   }, [query]);
 
@@ -43,7 +48,7 @@ export default function NewAddress({ user }) {
 
   return tab < 2 ? (
     <div className="w-full h-screen absolute top-0 left-0 bg-black/50 flex">
-      <div className="bg-white lg:w-[600px] min-h-screen w-full lg:h-auto m-auto lg:rounded-lg py-5 px-2 lg:px-10">
+      <div className="bg-white lg:w-[600px] min-h-screen w-full lg:h-auto m-auto lg:rounded-lg py-5 px-2 lg:px-10 relative">
         <Close
           className="absolute right-2 top-2 cursor-pointer"
           onClick={() => {
@@ -66,7 +71,16 @@ export default function NewAddress({ user }) {
           placeholder="Tuliskan desa atau kota"
         />
         <div className="border-x">
-          {address &&
+          {isLoading ? (
+            <>
+              <button className="py-4 w-full px-5 text-left border-b flex hover:opacity-70 transition-all duration-300 h-16 animate-pulse">
+                <p className="w-full h-9 bg-gray-300"></p>
+              </button>
+              <button className="py-4 w-full px-5 text-left border-b flex hover:opacity-70 transition-all duration-300 h-16 animate-pulse">
+                <p className="w-full h-9 bg-gray-300"></p>
+              </button>
+            </>
+          ) : (
             address?.map((item, index) => {
               return (
                 <button
@@ -78,7 +92,8 @@ export default function NewAddress({ user }) {
                   {item.display_name}
                 </button>
               );
-            })}
+            })
+          )}
         </div>
       </div>
     </div>

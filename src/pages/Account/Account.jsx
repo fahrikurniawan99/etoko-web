@@ -1,6 +1,7 @@
 import {
   Close,
   GridViewOutlined,
+  HomeOutlined,
   LogoutOutlined,
   Menu,
   SettingsOutlined,
@@ -37,8 +38,14 @@ export default function Account() {
           </div>
         </div>
         <div className="my-auto px-5">
+          <Link
+            to={"/"}
+            className="text-gray-900 font-medium gap-3 flex w-full py-5 text-left px-3 rounded-md transition-all duration-300"
+          >
+            <HomeOutlined /> Beranda
+          </Link>
           <NavLink
-            to={"/account/"}
+            to={"/account/overview"}
             className={({ isActive }) =>
               [
                 "text-gray-900 font-medium gap-3 flex w-full py-5 text-left px-3 rounded-md transition-all duration-300",
