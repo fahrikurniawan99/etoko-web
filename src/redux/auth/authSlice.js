@@ -8,11 +8,13 @@ export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password }, { rejectWithValue }) => {
     try {
+      toast.loading("mengirim data...");
       const { data } = await makeRequest.post("/api/auth/local", {
         identifier: email,
         password: password,
       });
-      hiddenLoading();
+      toast.dismiss();
+      toast.success("berhasil login");
       return {
         username: data.user.username,
         email: data.user.email,
@@ -20,7 +22,8 @@ export const login = createAsyncThunk(
         jwt: data.jwt,
       };
     } catch (error) {
-      hiddenLoading();
+      toast.dismiss();
+      toast.error("password atau email salah!");
       return rejectWithValue(error.response.data);
     }
   }

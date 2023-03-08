@@ -13,7 +13,6 @@ import Account from "./pages/Account/Account";
 import Overview from "./pages/Account/Overview";
 import Order from "./pages/Account/Order";
 import Setting from "./pages/Account/Setting";
-import DialogModal from "./components/DialogModal";
 
 export default function App() {
   const router = createBrowserRouter([

@@ -8,7 +8,7 @@ import useFetch from "../../hooks/useFetch";
 
 export default function Featured() {
   const navigate = useNavigate();
-  const { data, isLoading } = useFetch(
+  const { data } = useFetch(
     "/api/products?populate=*&[filters][type][$eq]=Featured"
   );
 
@@ -21,7 +21,7 @@ export default function Featured() {
           </div>
         ) : (
           data?.data?.map((value, index) => {
-          const item = value?.attributes;
+            const item = value?.attributes;
             return (
               <Card
                 key={index}

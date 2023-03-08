@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import makeRequest from "../../lib/axiosInstance";
 
@@ -27,17 +28,26 @@ export default function SignUp() {
 
   const signUp = async () => {
     try {
+      toast.loading("mengirim data...");
       const { confirmPassword, ...data } = form;
-      const res = await makeRequest.post("/api/auth/local/register", data);
+      await makeRequest.post("/api/auth/local/register", data);
 
-      alert("Sign Up successfull.");
+      toast.dismiss();
+      toast.success("berhasil mendaftar akun", { duration: 3000 });
+      setTimeout(() => {
+        toast.loading("menuju ke halaman sign in...", { duration: 2000 });
+      }, 3000);
 
-      setIsError(false);
-      setIsLoading(false);
-      setForm({});
+      setTimeout(() => {
+        setIsError(false);
+        setIsLoading(false);
+        setForm({});
 
-      navigate("/signin");
+        navigate("/signin");
+      }, 4500);
     } catch (error) {
+      toast.dismiss();
+      toast.error(error.response.data.error.message || "data tidak valid");
       setIsError(true);
       console.log(error);
       setIsLoading(false);

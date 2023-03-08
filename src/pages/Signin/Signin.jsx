@@ -32,9 +32,8 @@ export default function SignIn() {
         return dispatch(setError("Data belum valid."));
       }
     });
-    showLoading();
     dispatch(solveError());
-    await dispatch(login(form));
+    dispatch(login(form));
   };
 
   return (

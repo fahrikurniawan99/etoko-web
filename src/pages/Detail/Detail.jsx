@@ -1,5 +1,4 @@
 import { BookmarkAdd, WarningAmberOutlined, Close } from "@mui/icons-material";
-import { CircularProgress } from "@mui/material";
 import React from "react";
 import ReactDOM from "react-dom";
 import { useDispatch } from "react-redux";
@@ -86,77 +85,72 @@ export default function Detail() {
     ReactDOM.render(<Modal />, container);
   };
 
-  return !data ? (
-    <div
-      className={`flex justify-center items-center container mx-auto`}
-      style={{ height: "calc(100vh - 64px)" }}
-    >
-      <CircularProgress />
-    </div>
-  ) : (
-    <div className="container lg:mb-10  mx-auto" id="detail-product">
-      <div className="h-14 w-full border-y flex items-center gap-1 px-2 lg:px-0">
-        <Link to={"/"} className="text-gray-900 font-medium">
-          Home
-        </Link>
-        <span className="text-gray-500">&gt;</span>
-        <Link
-          to={"/products/" + item?.attributes?.category?.data?.id}
-          className="text-gray-900 font-medium"
-        >
-          {item?.attributes?.category?.data?.attributes?.title}
-        </Link>
-        <span className="text-gray-500">&gt;</span>
-        <p className="text-gray-500">{slug}</p>
-      </div>
-      <div className="w-full flex flex-col lg:flex-row mt-5 px-2 lg:px-0">
-        <img
-          alt="product"
-          src={
-            data?.data[0]?.attributes?.img?.data?.attributes?.formats?.small
-              ?.url
-          }
-          className="w-[600px] h-[500px] object-cover"
-        />
-        <div className="lg:ml-10 mt-10 lg:mt-0">
-          <h1 className="text-gray-700 text-3xl font-bold">
-            {data?.data[0]?.attributes?.title}
-          </h1>
-          <h2 className="text-gray-700 font-semibold text-3xl mt-3 flex items-start gap-1">
-            {data?.data[0]?.attributes?.priceDiscount > 0
-              ? rupiahFormater(data?.data[0]?.attributes.priceDiscount)
-              : rupiahFormater(data?.data[0]?.attributes.price)}
-            {data?.data[0]?.attributes?.priceDiscount > 0 && (
-              <span className="text-gray-400 line-through font-normal text-xl">
-                {rupiahFormater(data?.data[0]?.attributes.price)}
-              </span>
-            )}
-          </h2>
-          <p className="text-gray-400 leading-relaxed mt-5">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis
-            itaque asperiores sapiente eaque perferendis quas incidunt
-            laudantium porro excepturi corporis suscipit explicabo enim nam
-            maiores, at eveniet ipsam quae. Explicabo?
-          </p>
-          <div className="flex justify-between items-center mt-10 mb-10 lg:mb-0">
-            <button
-              disabled={
-                Object.keys(
-                  products.find((value) => value.id === item.id) || {}
-                ).length
-              }
-              className="bg-gray-900 text-white w-56 py-3 disabled:opacity-20"
-              onClick={handleOnClick}
-            >
-              Add To Cart
-            </button>
-            <BookmarkAdd
-              fontSize="large"
-              className="text-gray-900 cursor-pointer"
-            />
+  return (
+    data && (
+      <div className="container lg:mb-10  mx-auto" id="detail-product">
+        <div className="h-14 w-full border-y flex items-center gap-1 px-2 lg:px-0">
+          <Link to={"/"} className="text-gray-900 font-medium">
+            Home
+          </Link>
+          <span className="text-gray-500">&gt;</span>
+          <Link
+            to={"/products/" + item?.attributes?.category?.data?.id}
+            className="text-gray-900 font-medium"
+          >
+            {item?.attributes?.category?.data?.attributes?.title}
+          </Link>
+          <span className="text-gray-500">&gt;</span>
+          <p className="text-gray-500">{slug}</p>
+        </div>
+        <div className="w-full flex flex-col lg:flex-row mt-5 px-2 lg:px-0">
+          <img
+            alt="product"
+            src={
+              data?.data[0]?.attributes?.img?.data?.attributes?.formats?.small
+                ?.url
+            }
+            className="w-[600px] h-[500px] object-cover"
+          />
+          <div className="lg:ml-10 mt-10 lg:mt-0">
+            <h1 className="text-gray-700 text-3xl font-bold">
+              {data?.data[0]?.attributes?.title}
+            </h1>
+            <h2 className="text-gray-700 font-semibold text-3xl mt-3 flex items-start gap-1">
+              {data?.data[0]?.attributes?.priceDiscount > 0
+                ? rupiahFormater(data?.data[0]?.attributes.priceDiscount)
+                : rupiahFormater(data?.data[0]?.attributes.price)}
+              {data?.data[0]?.attributes?.priceDiscount > 0 && (
+                <span className="text-gray-400 line-through font-normal text-xl">
+                  {rupiahFormater(data?.data[0]?.attributes.price)}
+                </span>
+              )}
+            </h2>
+            <p className="text-gray-400 leading-relaxed mt-5">
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis
+              itaque asperiores sapiente eaque perferendis quas incidunt
+              laudantium porro excepturi corporis suscipit explicabo enim nam
+              maiores, at eveniet ipsam quae. Explicabo?
+            </p>
+            <div className="flex justify-between items-center mt-10 mb-10 lg:mb-0">
+              <button
+                disabled={
+                  Object.keys(
+                    products.find((value) => value.id === item.id) || {}
+                  ).length
+                }
+                className="bg-gray-900 text-white w-56 py-3 disabled:opacity-20"
+                onClick={handleOnClick}
+              >
+                Add To Cart
+              </button>
+              <BookmarkAdd
+                fontSize="large"
+                className="text-gray-900 cursor-pointer"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    )
   );
 }
