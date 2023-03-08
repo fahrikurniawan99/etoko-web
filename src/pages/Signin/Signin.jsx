@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { showLoading } from "../../helpers/Loading";
 import useAuth from "../../hooks/useAuth";
 import { login, setError, solveError } from "../../redux/auth/authSlice";
 
@@ -31,6 +32,7 @@ export default function SignIn() {
         return dispatch(setError("Data belum valid."));
       }
     });
+    showLoading();
     dispatch(solveError());
     await dispatch(login(form));
   };

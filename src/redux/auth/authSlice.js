@@ -1,5 +1,6 @@
 import { NetworkLockedOutlined } from "@mui/icons-material";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { hiddenLoading } from "../../helpers/Loading";
 import makeRequest from "../../lib/axiosInstance";
 
 export const login = createAsyncThunk(
@@ -10,6 +11,7 @@ export const login = createAsyncThunk(
         identifier: email,
         password: password,
       });
+      hiddenLoading();
       return {
         username: data.user.username,
         email: data.user.email,
@@ -17,6 +19,7 @@ export const login = createAsyncThunk(
         jwt: data.jwt,
       };
     } catch (error) {
+      hiddenLoading();
       return rejectWithValue(error.response.data);
     }
   }

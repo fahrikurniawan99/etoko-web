@@ -1,20 +1,22 @@
 import { DeleteOutlineOutlined } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import ConfirmOrder from "../../components/ConfirmOrder";
-import ConfirmPayment from "../../components/ConfirmPayment";
 import CustomError from "../../components/Error";
+import { hiddenLoading, showLoading } from "../../helpers/Loading";
 import rupiahFormater from "../../helpers/rupiahFormater";
+import useAuth from "../../hooks/useAuth";
 import useCart from "../../hooks/useCart";
-import { deleteItem } from "../../redux/cart/cartSlice";
-import ReactDOM from "react-dom";
-import Steper from "../../components/Steper";
+import makeRequest from "../../lib/axiosInstance";
+import { clearCart, deleteItem } from "../../redux/cart/cartSlice";
+import Order from "./Order";
 
 export default function Cart() {
   const { products } = useCart();
   const dispatch = useDispatch();
   const [subTotal, setSubTotal] = useState(0);
+  const { user } = useAuth();
 
   useEffect(() => {
     setSubTotal(products.reduce((prev, cur) => prev + cur.price, 0));
@@ -22,11 +24,37 @@ export default function Cart() {
     return () => {};
   }, [products]);
 
-  const openModal = () => {
-    const container = document.createElement("div");
-    container.setAttribute("id", "modal-contianer");
-    document.body.appendChild(container);
-    ReactDOM.render(<Steper />, container);
+  const clearCartHandler = () => {
+    dispatch(clearCart());
+  };
+
+  const checkout = async () => {
+    try {
+      showLoading();
+      const ids = products.map((item) => item.id);
+      await makeRequest.put(
+        "/api/cart",
+        { data: { items: ids } },
+        { headers: { Authorization: `Bearer ${user.jwt}` } }
+      );
+      hiddenLoading();
+
+      const container = document.createElement("div");
+      container.setAttribute("id", "modal-contianer");
+      document.body.appendChild(container);
+      document.body.classList.add("oveflow-hidden");
+      ReactDOM.render(
+        <Order
+          token={user.jwt}
+          totalPrice={subTotal}
+          clearCart={clearCartHandler}
+        />,
+        container
+      );
+    } catch (error) {
+      console.log(error);
+      hiddenLoading();
+    }
   };
 
   return !products.length ? (
@@ -86,10 +114,10 @@ export default function Cart() {
             </p>
           </div>
           <button
-            onClick={openModal}
+            onClick={checkout}
             className="w-full bg-gray-900 text-white py-5 rounded-lg font-semibold "
           >
-            Place Order
+            Checkout
           </button>
         </div>
       </div>
