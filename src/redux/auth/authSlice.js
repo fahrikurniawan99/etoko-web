@@ -1,6 +1,7 @@
-import { NetworkLockedOutlined } from "@mui/icons-material";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import toast from "react-hot-toast";
 import { hiddenLoading } from "../../helpers/Loading";
+import { closeModal } from "../../helpers/modalAction";
 import makeRequest from "../../lib/axiosInstance";
 
 export const login = createAsyncThunk(
@@ -75,7 +76,8 @@ const authSlice = createSlice({
         id: null,
         jwt: null,
       };
-      window.location.reload();
+      toast.success("Berhasil logout");
+      closeModal();
     },
   },
   extraReducers: (builder) => {

@@ -14,8 +14,7 @@ export default function Card({ urlImage, slug, title, priceDiscount, price }) {
         alt="thumbnail"
         className="object-cover h-[300px] w-full rounded-lg"
       />
-      <h1 className="text-gray-800 font-medium  tracking-tight text-lg mt-2">
-        {title}
+      <h1 className="text-gray-800 font-medium  tracking-tight text-lg mt-2" id="modal-title">
       </h1>
       <p className="text-gray-800 font-medium">
         {priceDiscount ? rupiahFormater(priceDiscount) : rupiahFormater(price)}

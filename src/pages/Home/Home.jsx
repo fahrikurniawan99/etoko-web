@@ -1,11 +1,12 @@
+import { WarningAmberOutlined } from "@mui/icons-material";
 import React from "react";
+import DialogModal from "../../components/DialogModal";
+import { closeModal } from "../../helpers/modalAction";
 import Categories from "./Categories";
 import Featured from "./Featured";
 import Slider from "./Slider";
 
 export default function Home() {
-
-
   return (
     <div className="w-full overflow-hidden">
       <Slider />
