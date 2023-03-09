@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import Accordion from "../../components/Accordion";
 import Card from "../../components/Card";
 import useFetch from "../../hooks/useFetch";
 
@@ -43,62 +42,6 @@ export default function Category() {
           >
             clear filter
           </button>
-          <Accordion
-            title={"Type"}
-            index={1}
-            active={active}
-            toggleAccordion={setActive}
-          >
-            {subCategoryData &&
-              subCategoryData?.data?.map((value, index) => (
-                <div className="flex items-center mt-2">
-                  <input
-                    type="radio"
-                    name={"Type"}
-                    id={index}
-                    key={index}
-                    checked={
-                      value.attributes.title === subCategory ? true : false
-                    }
-                    onChange={() => setSubCategory(value.attributes.title)}
-                  />
-                  <label
-                    htmlFor={index}
-                    className={[
-                      "ml-1 transition-all duration-500 font-medium cursor-pointer",
-                      subCategory == value.attributes.title
-                        ? "text-gray-900 "
-                        : "text-gray-500 ",
-                    ].join(" ")}
-                  >
-                    {value.attributes.title}
-                  </label>
-                </div>
-              ))}
-          </Accordion>
-          <Accordion
-            title={"Price"}
-            index={2}
-            active={active}
-            toggleAccordion={setActive}
-          >
-            <div className="bg-gray-100 flex w-full px-3 py-3 rounded-md text-gray-400 mt-4">
-              <span>From Rp.</span>
-              <input
-                type={"number"}
-                className="w-full bg-transparent outline-none text-gray-800 ml-1 font-medium h-full"
-                style={{ flex: 1 }}
-              />
-            </div>
-            <div className="bg-gray-100 flex mt-3 w-full px-3 py-3 rounded-md text-gray-400">
-              <span>Up to Rp.</span>
-              <input
-                type={"number"}
-                className="w-full bg-transparent outline-none text-gray-800 ml-1 font-medium h-full"
-                style={{ flex: 1 }}
-              />
-            </div>
-          </Accordion>
         </div>
       </div>
       <div className="col-span-3 border-t lg:border-0">

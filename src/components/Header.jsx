@@ -8,6 +8,7 @@ import useCart from "../hooks/useCart";
 import { logout } from "../redux/auth/authSlice";
 import { clearCart } from "../redux/cart/cartSlice";
 import DialogModal from "./DialogModal";
+import ShoppingCart from "./ShoppingCart";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,8 +55,9 @@ export default function Header() {
         isLoading={isLoading}
       />
       <div className="sticky top-0 z-50 bg-white px-2 lg:px-0">
-        <div className="flex container mx-auto h-16 items-center relative">
-          <div
+        <ShoppingCart isOpen={isOpen} setIsOpen={setIsOpen} />
+        <div className="flex container mx-auto h-16 items-center">
+          {/* <div
             className={[
               "bg-white z-50 w-[300px] right-6 absolute top-10 overflow-auto py-5 px-7 shadow-lg rounded-lg origin-top-right transition-all",
               isOpen ? "block" : "hidden",
@@ -73,7 +75,7 @@ export default function Header() {
                 View Cart
               </Link>
             </div>
-          </div>
+          </div> */}
           <Link
             to={"/"}
             className="italic font-bold text-gray-800 text-2xl"

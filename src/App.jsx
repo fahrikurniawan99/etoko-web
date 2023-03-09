@@ -2,19 +2,17 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CustomError from "./components/Error";
 import Layout from "./components/Layout";
-import Detail from "./pages/Detail/Detail";
-import Cart from "./pages/Cart/Cart";
-import Home from "./pages/Home/Home";
-import AuthLayout from "./components/AuthLayout";
-import SignIn from "./pages/Signin/Signin";
-import SignUp from "./pages/Signup/Signup";
+import useAuth from "./hooks/useAuth";
+import useFetch from "./hooks/useFetch";
 import Category from "./pages/Category/Category";
-import Account from "./pages/Account/Account";
-import Overview from "./pages/Account/Overview";
-import Order from "./pages/Account/Order";
-import Setting from "./pages/Account/Setting";
+import CheckoutPage from "./pages/Checkout/Checkout";
+import Detail from "./pages/Detail/Detail";
+import Home from "./pages/Home/Home";
 
 export default function App() {
+  const { user } = useAuth();
+  const { data } = useFetch("/api/cart", user.jwt);
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -27,20 +25,6 @@ export default function App() {
         {
           path: "/product/:slug",
           element: <Detail />,
-        },
-        {
-          path: "/shopping-cart",
-          element: <Cart />,
-        },
-        {
-          path: "/signin",
-          element: <AuthLayout />,
-          children: [{ path: "/signin", element: <SignIn /> }],
-        },
-        {
-          path: "/signup",
-          element: <AuthLayout />,
-          children: [{ path: "/signup", element: <SignUp /> }],
         },
         {
           path: "/products/:categoryid",
@@ -57,15 +41,18 @@ export default function App() {
         },
       ],
     },
+    data?.data[0]?.attributes?.items?.length && {
+      path: "checkout",
+      element: <CheckoutPage />,
+    },
     {
-      path: "/account",
-      element: <Account />,
-      children: [
-        { path: "/account/", element: <Setting /> },
-        { path: "/account/overview", element: <Overview /> },
-        { path: "/account/order", element: <Order /> },
-        { path: "/account/setting", element: <Setting /> },
-      ],
+      path: "*",
+      element: (
+        <CustomError
+          title={"ERROR 404!"}
+          description={"looks like the page was not found"}
+        />
+      ),
     },
   ]);
   return (
