@@ -1,103 +1,227 @@
-import { CheckCircle, Edit } from "@mui/icons-material";
+import { Listbox } from "@headlessui/react";
+import { CheckCircle } from "@mui/icons-material";
+import axios from "axios";
 import clsx from "clsx";
 import { Form, Formik } from "formik";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import rupiahFormater from "../../helpers/rupiahFormater";
+import { useDispatch } from "react-redux";
+import PaymentSucces from "../../components/PaymentSucces";
 import useAuth from "../../hooks/useAuth";
 import useCart from "../../hooks/useCart";
 import makeRequest from "../../lib/axiosInstance";
 import { checkoutSchema } from "../../lib/schema";
+import { clearCart } from "../../redux/cart/cartSlice";
+import rupiahFormater from "../../utils/rupiahFormater";
 import TextInput from "./TextInput";
+
+function Province({ province, nextHandler }) {
+  const [selectedProvince, setSelectedProvince] = useState(null);
+
+  return (
+    province && (
+      <div className="col-span-2 z-50">
+        <div className="relative">
+          <Listbox value={selectedProvince} onChange={setSelectedProvince}>
+            <Listbox.Button className="bg-white w-full text-left px-4 py-2 border flex justify-between items-center">
+              {selectedProvince ? selectedProvince.province : "Pilih provinsi"}
+            </Listbox.Button>
+            <Listbox.Options className="absolute top-full border border-t-0 bg-white w-full h-[300px] overflow-y-auto">
+              {province.map((item, index) => {
+                return (
+                  <Listbox.Option
+                    key={item.province_id}
+                    value={item}
+                    className={({ active }) =>
+                      clsx(
+                        "py-2 cursor-pointer relative px-4",
+                        index === 0 ? " border-t-0" : " border-t"
+                      )
+                    }
+                  >
+                    {({ selected }) => (
+                      <>
+                        <span>{item.province}</span>
+                        {selected && (
+                          <CheckCircle
+                            sx={{ fontSize: 16 }}
+                            className="absolute top-1/2 -translate-y-1/2 right-4 text-green-500"
+                          />
+                        )}
+                      </>
+                    )}
+                  </Listbox.Option>
+                );
+              })}
+            </Listbox.Options>
+          </Listbox>
+        </div>
+        <div className="text-right">
+          <button
+            type="button"
+            disabled={!selectedProvince}
+            onClick={() => nextHandler(selectedProvince)}
+            className="bg-gray-900 min-w-[80px] text-white rounded w-fit px-5 h-11 mt-3 disabled:cursor-not-allowed text-sm font-medium tracking-tight"
+          >
+            Konfirmasi
+          </button>
+        </div>
+      </div>
+    )
+  );
+}
+function City({ city, nextHandler }) {
+  const [selectedCity, setSelectedCity] = useState(null);
+
+  return (
+    city && (
+      <div className="col-span-2 z-50">
+        <div className="relative">
+          <Listbox value={selectedCity} onChange={setSelectedCity}>
+            <Listbox.Button className="bg-white w-full text-left px-4 py-2 border flex justify-between items-center">
+              {selectedCity ? selectedCity.city_name : "Pilih kota"}
+            </Listbox.Button>
+            <Listbox.Options className="absolute top-full border border-t-0 bg-white w-full h-[300px] overflow-y-auto">
+              {city.map((item, index) => {
+                return (
+                  <Listbox.Option
+                    key={item.city_id}
+                    value={item}
+                    className={({ active }) =>
+                      clsx(
+                        "py-2 cursor-pointer relative px-4",
+                        index === 0 ? " border-t-0" : " border-t"
+                      )
+                    }
+                  >
+                    {({ selected }) => (
+                      <>
+                        <span>{item.city_name}</span>
+                        {selected && (
+                          <CheckCircle
+                            sx={{ fontSize: 16 }}
+                            className="absolute top-1/2 -translate-y-1/2 right-4 text-green-500"
+                          />
+                        )}
+                      </>
+                    )}
+                  </Listbox.Option>
+                );
+              })}
+            </Listbox.Options>
+          </Listbox>
+        </div>
+        <div className="text-right">
+          <button
+            type="button"
+            disabled={!selectedCity}
+            onClick={() => nextHandler(selectedCity)}
+            className="bg-gray-900 min-w-[80px] text-white rounded w-fit px-5 h-11 mt-3 disabled:cursor-not-allowed text-sm font-medium tracking-tight"
+          >
+            Konfirmasi
+          </button>
+        </div>
+      </div>
+    )
+  );
+}
 
 export default function CheckoutPage() {
   const { user } = useAuth();
   const { products } = useCart();
   const [subTotal, setSubTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [deliveryFee, setDeliveryFee] = useState(0);
-  const [query, setQuery] = useState(null);
-  const [userAddress, setUserAddress] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState(null);
-  const inputOneRef = useRef(null);
-  const [successPayemnt, setSuccessPayemnt] = useState(false);
+  const [deliveryCost, setDeliveryCost] = useState({ fee: 0 });
+  const [successPayment, setSuccessPayment] = useState(false);
+  const [province, setProvince] = useState(null);
+  const [city, setCity] = useState(null);
+  const [provinceValue, setProvinceValue] = useState(null);
+  const [cityValue, setCityValue] = useState(null);
+  const dispatch = useDispatch();
+
+  const getProvince = useCallback(async () => {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/province`
+    );
+    setProvince(response.data.rajaongkir.results);
+  }, []);
+
+  const getCity = async (provinceId) => {
+    const response = await axios(
+      `${import.meta.env.VITE_API_URL}/city?province=` + provinceId
+    );
+    setCity(response.data.rajaongkir.results);
+    toast.dismiss();
+  };
+
+  const getCost = async (cityId) => {
+    const body = {
+      origin: "352",
+      destination: cityId,
+      weight: 1700,
+      courier: "jne",
+    };
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/cost`,
+      body
+    );
+    const cost = {
+      fee: response.data.rajaongkir.results[0].costs[0].cost[0].value,
+      origin: response.data.rajaongkir["origin_details"].city_name,
+      destination: response.data.rajaongkir["destination_details"].city_name,
+      service: "jne",
+    };
+    setDeliveryCost(cost);
+    toast.dismiss();
+    toast.success(`Ongkos kirim di tetapkan`, { duration: 4000 });
+  };
+
+  useEffect(() => {
+    getProvince();
+  }, [getProvince]);
 
   useEffect(() => {
     setSubTotal(products.reduce((prev, cur) => prev + cur.price, 0));
   }, [products]);
 
-  const fetchAddress = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const response = await makeRequest.get(
-        `https://nominatim.openstreetmap.org/search?q=${query}&format=json&addressdetails=1&limit=10`
-      );
-      setUserAddress(response.data);
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-    }
-  }, [query]);
-
-  useEffect(() => {
-    if (query) {
-      fetchAddress();
-    }
-
-    return () => {};
-  }, [fetchAddress]);
-
-  const setQueryDebounce = (e) => setQuery(e.target.value);
-  const handleOnChange = debounce(setQueryDebounce, 500);
-
-  const handleSelect = async (item) => {
-    try {
-      setSelectedAddress(item);
-      setQuery(null);
-    } catch (error) {
-      toast.error(
-        error?.response?.data?.error?.message || "Internal server error"
-      );
-    }
-  };
-
-  const editAddress = () => {
-    const value = { ...selectedAddress };
-    setSelectedAddress(null);
-    inputOneRef.current.value = value.display_name;
-    inputOneRef.current.focus();
-  };
-
   const initialValues = {
     recipientName: "",
     phoneNumber: "",
     notes: "",
+    province: "",
+    city: "",
   };
 
-  const handleSubmit = async (values, { setErrors }) => {
+  const handleSubmit = async (values, { setErrors, ...props }) => {
     try {
+      setIsLoading(true);
+      toast.loading("mengirim data...");
       const body = {
         data: {
           ...values,
-          total: subTotal + deliveryFee,
-          address: selectedAddress?.display_name,
+          total: subTotal + deliveryCost.fee,
+          address: deliveryCost.destination,
         },
       };
       const options = {
         headers: { Authorization: `Bearer ${user.jwt}` },
       };
       await makeRequest.post("/api/orders", body, options);
-      setSuccessPayemnt(true);
+      setIsLoading(false);
+      dispatch(clearCart());
+      setSuccessPayment(true);
+      toast.dismiss();
     } catch (error) {
-      console.log(error)
+      setIsLoading(false);
+      toast.dismiss();
+      console.log(error);
       toast.error(
         error?.response?.data?.error?.message || "Internal server error"
       );
     }
   };
 
-  if (successPayemnt) {
+  if (successPayment) {
     return <PaymentSucces />;
   }
 
@@ -108,7 +232,7 @@ export default function CheckoutPage() {
         validationSchema={checkoutSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, errors, isValid }) => {
+        {({ isSubmitting, errors, setValues, values }) => {
           return (
             <Form>
               <div className="grid lg:grid-cols-2 container mx-auto gap-16">
@@ -117,68 +241,65 @@ export default function CheckoutPage() {
                     Detail Pengiriman
                   </h1>
                   <div className="grid grid-cols-2 gap-5">
-                    <div className="col-span-2 relative">
-                      <div className="relative">
-                        <div className="relative">
-                          <input
-                            type="text"
-                            disabled
-                            className="bg-white outline-none border px-4 rounded py-2 w-full text-gray-500"
-                            value={selectedAddress?.display_name}
+                    {!provinceValue ? (
+                      <Province
+                        province={province}
+                        nextHandler={(value) => {
+                          toast.success(`${value.province} berhasil di pilih`, {
+                            duration: 1000,
+                          });
+                          setValues({ province: value.province });
+                          setProvinceValue(value.province_id);
+                          setTimeout(() => {
+                            toast.loading(`mengambil data kota...`);
+                            getCity(value.province_id);
+                          }, 1000);
+                        }}
+                      />
+                    ) : (
+                      <TextInput
+                        className="col-span-2"
+                        name="province"
+                        disabled={true}
+                        icon={
+                          <CheckCircle
+                            sx={{ fontSize: 16 }}
+                            className="text-green-500 top-1/2 -translate-y-1/2 right-4 absolute"
                           />
-                          <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                            <CheckCircle
-                              className="text-green-500"
-                              sx={{ fontSize: 20 }}
-                            />
-                            <Edit
-                              onClick={editAddress}
-                              className="text-gray-500 cursor-pointer hover:opacity-50 ml-2"
-                              sx={{ fontSize: 20 }}
-                            />
-                          </div>
-                        </div>
-                        <input
-                          type="text"
-                          ref={inputOneRef}
-                          onChange={handleOnChange}
-                          required
-                          className={clsx(
-                            "bg-white outline-none border px-4 rounded py-2 w-full top-0 absolute",
-                            selectedAddress ? "-z-50" : ""
-                          )}
-                          placeholder="masukan alamat"
-                        />
-                      </div>
-                      {query && (
-                        <div className="absolute top-full left-0 w-full">
-                          {isLoading ? (
-                            Array.from({ length: 8 }).map((item, index) => (
-                              <div
-                                key={index}
-                                className="border h-12 w-full bg-white p-2"
-                              >
-                                <div className="bg-gray-200 animate-pulse h-full w-full"></div>
-                              </div>
-                            ))
-                          ) : userAddress.length ? (
-                            userAddress.map((item, index) => (
-                              <div
-                                key={index}
-                                onClick={() => handleSelect(item)}
-                                className="border border-gray-200 w-full bg-white px-3 py-2 cursor-pointer hover:bg-gray-100 transition-all duration-300"
-                              >
-                                <p className="">{item?.display_name}</p>
-                              </div>
-                            ))
-                          ) : (
-                            <div className="border border-gray-200 w-full bg-white px-3 py-2">
-                              <p className="">Alamat tidak tersedia.</p>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
+                        }
+                      />
+                    )}
+                    {/* {values.province ? ( */}
+                    {!cityValue ? (
+                      <City
+                        city={city}
+                        nextHandler={(value) => {
+                          toast.success(
+                            `${value.city_name} berhasil di pilih`,
+                            { duration: 1000 }
+                          );
+                          setValues({ ...values, city: value.city_name });
+                          setCityValue(value.city_id);
+                          setTimeout(() => {
+                            toast.loading("menghitung ongkos kirim...");
+                            getCost(value.city_id);
+                          }, 1000);
+                        }}
+                      />
+                    ) : (
+                      <TextInput
+                        className="col-span-2"
+                        name="city"
+                        disabled={true}
+                        icon={
+                          <CheckCircle
+                            sx={{ fontSize: 16 }}
+                            className="text-green-500 top-1/2 -translate-y-1/2 right-4 absolute"
+                          />
+                        }
+                      />
+                    )}
+                    {/* ) : null} */}
                     <TextInput
                       label="Nama penerima"
                       className={"col-span-1"}
@@ -247,27 +368,33 @@ export default function CheckoutPage() {
                       </div>
                       <div className="flex justify-between mt-2">
                         <p>Ongkos kirim</p>
-                        <p className="text-lg font-medium">
-                          {rupiahFormater(deliveryFee)}
-                        </p>
+                        <div className="text-right">
+                          <p className="text-lg font-medium">
+                            {rupiahFormater(deliveryCost.fee)}
+                          </p>
+                          {deliveryCost.fee ? (
+                            <span className="text-gray-700 font-medium">
+                              {deliveryCost.destination}
+                            </span>
+                          ) : null}
+                        </div>
                       </div>
                       <div className="flex justify-between mt-3 border-t pt-3">
                         <p className="text-xl">Total</p>
                         <p className="text-xl font-medium">
-                          {rupiahFormater(subTotal + deliveryFee)}
+                          {rupiahFormater(subTotal + deliveryCost.fee)}
                         </p>
                       </div>
                       <button
                         disabled={
                           isLoading ||
                           isSubmitting ||
-                          Object.keys(errors).length ||
-                          !isValid
+                          Object.keys(errors).length
                         }
                         type={"submit"}
                         className="bg-gray-900 text-white text-sm h-12 font-medium w-full rounded mt-5 disabled:opacity-30"
                       >
-                        {isLoading ? "loading..." : "Pilih Pembayaran"}
+                        Pilih Pembayaran
                       </button>
                     </div>
                   </div>

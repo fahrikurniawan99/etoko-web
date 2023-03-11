@@ -11,6 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@headlessui/react": "^1.7.13",
     "@mui/icons-material": "^5.11.9",
     "@mui/material": "^5.11.10",
     "@reduxjs/toolkit": "^1.9.3",
@@ -26,6 +27,7 @@
     "react-router-dom": "^6.8.1",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
+    "swiper": "^9.1.0",
     "yup": "^1.0.2"
   },
   "devDependencies": {

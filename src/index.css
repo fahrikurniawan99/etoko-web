@@ -32,3 +32,14 @@
 .dashboard-container .right::-webkit-scrollbar-thumb {
   @apply bg-white rounded-full opacity-20;
 }
+
+.swiper-pagination-bullet {
+  @apply bg-white opacity-100;
+}
+
+.swiper-pagination-bullet-active {
+  @apply bg-gray-900;
+}
+body{
+  @apply text-gray-800
+}

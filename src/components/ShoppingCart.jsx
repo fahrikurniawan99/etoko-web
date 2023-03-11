@@ -2,17 +2,19 @@ import { Close } from "@mui/icons-material";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import rupiahFormater from "../helpers/rupiahFormater";
+import { useDispatch } from "react-redux";
+import rupiahFormater from "../utils/rupiahFormater";
 import useAuth from "../hooks/useAuth";
 import useCart from "../hooks/useCart";
 import makeRequest from "../lib/axiosInstance";
+import { deleteItem } from "../redux/cart/cartSlice";
 
 export default function ShoppingCart({ isOpen, setIsOpen }) {
   const { user } = useAuth();
   const { products } = useCart();
   const [subTotal, setSubTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setSubTotal(products.reduce((prev, cur) => prev + cur.price, 0));
@@ -53,7 +55,7 @@ export default function ShoppingCart({ isOpen, setIsOpen }) {
         />
       </div>
       <div className="p-5 w-full h-full overflow-x-auto space-y-5">
-        {products.length &&
+        {products.length ? (
           products.map((item) => {
             return (
               <div className="text-gray-900 flex gap-3">
@@ -70,14 +72,20 @@ export default function ShoppingCart({ isOpen, setIsOpen }) {
                     <p className="text-lg font-medium">
                       {rupiahFormater(item.price)}
                     </p>
-                    <button className="text-red-500 text-sm mt-auto font-medium text-left">
+                    <button
+                      onClick={() => dispatch(deleteItem(item.id))}
+                      className="text-red-500 text-sm mt-auto font-medium text-left"
+                    >
                       remove
                     </button>
                   </div>
                 </div>
               </div>
             );
-          })}
+          })
+        ) : (
+          <p className="text-center text-gray-500">tidak ada item</p>
+        )}
       </div>
       <div className="mt-auto border-t w-full px-5 pt-5 pb-8">
         <div className="flex justify-between">
@@ -86,7 +94,7 @@ export default function ShoppingCart({ isOpen, setIsOpen }) {
         </div>
         <button
           onClick={checkoutHandler}
-          disabled={isLoading}
+          disabled={isLoading || !products.length}
           className="bg-gray-900 text-white text-sm h-12 font-medium w-full rounded mt-5 disabled:opacity-30"
         >
           {isLoading ? "loading..." : "Checkout"}

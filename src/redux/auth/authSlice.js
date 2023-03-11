@@ -1,20 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
-import { hiddenLoading } from "../../helpers/Loading";
-import { closeModal } from "../../helpers/modalAction";
 import makeRequest from "../../lib/axiosInstance";
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password, setSubmitting }, { rejectWithValue }) => {
     try {
-      toast.loading("mengirim data...");
+      toast.loading("send data");
       const { data } = await makeRequest.post("/api/auth/local", {
         identifier: email,
         password: password,
       });
       toast.dismiss();
-      toast.success("berhasil login");
+      toast.success("login successfull");
+      setSubmitting(false);
       return {
         username: data.user.username,
         email: data.user.email,
@@ -22,8 +21,9 @@ export const login = createAsyncThunk(
         jwt: data.jwt,
       };
     } catch (error) {
+      setSubmitting(false);
       toast.dismiss();
-      toast.error("password atau email salah!");
+      toast.error("incorect password or email");
       return rejectWithValue(error.response.data);
     }
   }
@@ -80,7 +80,6 @@ const authSlice = createSlice({
         jwt: null,
       };
       toast.success("Berhasil logout");
-      closeModal();
     },
   },
   extraReducers: (builder) => {

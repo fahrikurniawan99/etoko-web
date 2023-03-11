@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import rupiahFormater from "../../helpers/rupiahFormater";
+import rupiahFormater from "../../utils/rupiahFormater";
 import useAuth from "../../hooks/useAuth";
 import useCart from "../../hooks/useCart";
 import useFetch from "../../hooks/useFetch";
@@ -77,12 +77,6 @@ export default function Detail() {
     if (isLogin) {
       return dispatch(addToCart(payload));
     }
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-    document
-      .getElementById("root")
-      .classList.add("w-full", "h-screen", "overflow-hidden");
-    ReactDOM.render(<Modal />, container);
   };
 
   return (

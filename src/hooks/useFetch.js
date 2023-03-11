@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { hiddenLoading, showLoading } from "../helpers/Loading";
 import makeRequest from "../lib/axiosInstance";
 
 export default function useFetch(url, token) {
@@ -11,7 +10,6 @@ export default function useFetch(url, token) {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        showLoading();
         const res = await makeRequest.get(url, {
           headers: {
             Authorization: `Bearer ${token ? token : ""}`,
@@ -19,16 +17,16 @@ export default function useFetch(url, token) {
         });
         setData(res.data);
         setIsLoading(false);
-        hiddenLoading();
       } catch (error) {
         setIsError(true);
         setIsLoading(false);
-        hiddenLoading();
       }
     };
     fetchData();
 
-    return () => {};
+    return () => {
+      
+    };
   }, [url]);
   return { data, isLoading, isError };
 }
