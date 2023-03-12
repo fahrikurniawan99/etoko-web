@@ -80,13 +80,22 @@ export default function Header() {
               </button>
             )}
           </div>
-          {isLogin && (
+          {isLogin ? (
             <button
               className="text-red-500 font-medium lg:hidden"
               onClick={logoutHandler}
             >
               Logout
             </button>
+          ) : (
+            <>
+              <Link to={`/signin`} className="text-gray-700">
+                Sign In
+              </Link>
+              <Link to={`/signup`} className="text-gray-700">
+                Sign Up
+              </Link>
+            </>
           )}
           <div className="flex items-center gap-1">
             <ShoppingBagOutlined

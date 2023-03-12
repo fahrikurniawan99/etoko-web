@@ -13,7 +13,7 @@ export default function Skeleton() {
           )}
         >
           <p className="bg-gray-300 w-[100px] h-8 rounded mx-3"></p>
-          <span className="w-[100px] h-8 rounded bg-gray-300"></span>
+          <span className="w-[100px] h-8 rounded bg-gray-300 ml-3"></span>
           <p className="bg-gray-300 w-[100px] h-8 rounded ml-auto mr-3"></p>
           <div className="bg-gray-300 w-[100px] h-8 rounded"></div>
         </div>
