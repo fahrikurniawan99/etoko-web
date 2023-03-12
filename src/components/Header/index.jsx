@@ -93,7 +93,6 @@ export default function Header() {
               className="text-gray-400 cursor-pointer hover:text-gray-800"
               onClick={() => {
                 setIsOpen(!isOpen);
-                document.body.classList.toggle("overflow-hidden");
               }}
             />
             <p className="mt-1">{products.length}</p>

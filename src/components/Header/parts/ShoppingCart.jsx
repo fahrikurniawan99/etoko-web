@@ -53,7 +53,6 @@ export default function ShoppingCart({ isOpen, setIsOpen }) {
           className="cursor-pointer text-gray-400"
           onClick={() => {
             setIsOpen(false);
-            document.body.classList.remove("overflow-hidden");
           }}
         />
       </div>
@@ -94,7 +93,7 @@ export default function ShoppingCart({ isOpen, setIsOpen }) {
           <p className="text-center text-gray-500">tidak ada item</p>
         )}
       </div>
-      <div className="mt-auto border-t w-full px-5 pt-5 pb-8">
+      <div className="mt-auto border-t w-full px-5 pt-5">
         <div className="flex justify-between">
           <p>Subtotal</p>
           <p className="text-lg font-medium">{rupiahFormater(subTotal)}</p>
