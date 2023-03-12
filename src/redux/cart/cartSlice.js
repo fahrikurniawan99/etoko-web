@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import toast from "react-hot-toast";
 import { PURGE } from "redux-persist";
 
 const initialState = {
@@ -11,6 +12,7 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       state.products.push(action.payload);
+      toast.success("succes add to cart");
     },
     deleteItem: (state, action) => {
       state.products = state.products.filter(

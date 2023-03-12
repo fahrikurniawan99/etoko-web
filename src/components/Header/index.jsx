@@ -7,7 +7,7 @@ import useCart from "../../hooks/useCart";
 import { logout } from "../../redux/auth/authSlice";
 import { clearCart } from "../../redux/cart/cartSlice";
 import MobileNav from "./parts/MobileNav";
-import ShoppingCart from "../ShoppingCart";
+import ShoppingCart from "./parts/ShoppingCart";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +30,7 @@ export default function Header() {
   };
 
   return (
-    <div className="sticky top-0 z-50 bg-white px-2 lg:px-0">
+    <div className="sticky top-0 z-50 bg-white px-2 lg:px-0 border-b">
       <ShoppingCart isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className="flex container mx-auto h-16 items-center">
         <Link
@@ -47,13 +47,19 @@ export default function Header() {
           <Link to={`/products/2`} className="text-gray-500">
             Women
           </Link>
+          <Link to={`/products/3`} className="text-gray-500">
+            Child
+          </Link>
+          <Link to={`/products/4`} className="text-gray-500">
+            Accessoris
+          </Link>
         </div>
         <MobileNav />
         <div className="ml-auto flex items-center gap-5 text-sm">
           <div className="lg:flex hidden items-center gap-5">
             {isLogin ? (
-              <Link to={`/account/`} className="text-gray-500">
-                Account
+              <Link to={`/orders`} className="text-gray-500">
+                Your orders
               </Link>
             ) : (
               <>
@@ -74,10 +80,21 @@ export default function Header() {
               </button>
             )}
           </div>
+          {isLogin && (
+            <button
+              className="text-red-500 font-medium lg:hidden"
+              onClick={logoutHandler}
+            >
+              Logout
+            </button>
+          )}
           <div className="flex items-center gap-1">
             <ShoppingBagOutlined
               className="text-gray-400 cursor-pointer hover:text-gray-800"
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => {
+                setIsOpen(!isOpen);
+                document.body.classList.toggle("overflow-hidden");
+              }}
             />
             <p className="mt-1">{products.length}</p>
           </div>

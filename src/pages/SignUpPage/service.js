@@ -8,7 +8,7 @@ export const signupHandler = async ({ values, setSubmitting }) => {
     await makeRequest.post("/api/auth/local/register", data);
 
     toast.dismiss();
-    toast.success("akun created", { duration: 1000 });
+    toast.success("account created", { duration: 1000 });
     setTimeout(() => {
       toast.loading("redirecting", { duration: 1000 });
     }, 1000);

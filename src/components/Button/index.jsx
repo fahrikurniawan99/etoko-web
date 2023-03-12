@@ -6,7 +6,7 @@ export default function Button({ children, text, className, ...props }) {
     <button
       {...props}
       className={clsx(
-        "min-w-[100px] w-fit bg-indigo-600 py-2 rounded text-white font-medium px-4",
+        "min-w-[100px] py-2 bg-indigo-600 rounded text-white font-medium px-4",
         className && className
       )}
     >

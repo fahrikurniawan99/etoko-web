@@ -3,11 +3,11 @@ import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import rupiahFormater from "../utils/rupiahFormater";
-import useAuth from "../hooks/useAuth";
-import useCart from "../hooks/useCart";
-import makeRequest from "../lib/axiosInstance";
-import { deleteItem } from "../redux/cart/cartSlice";
+import rupiahFormater from "../../../utils/rupiahFormater";
+import useAuth from "../../../hooks/useAuth";
+import useCart from "../../../hooks/useCart";
+import makeRequest from "../../../lib/axiosInstance";
+import { deleteItem } from "../../../redux/cart/cartSlice";
 
 export default function ShoppingCart({ isOpen, setIsOpen }) {
   const { user } = useAuth();
@@ -44,37 +44,44 @@ export default function ShoppingCart({ isOpen, setIsOpen }) {
     <div
       className={clsx(
         isOpen ? "flex" : "hidden",
-        "absolute bg-white w-full max-w-md top-full h-[calc(100vh_-_64px)] right-0 flex flex-col border-t border-l text-gray-900"
+        "absolute bg-white w-full max-w-md top-full h-[calc(100vh_-_64px)] right-0 flex flex-col border-t border-l text-gray-900 z-[99]"
       )}
     >
       <div className="flex justify-between w-full p-5 font-medium">
         Keranjang Belanja{" "}
         <Close
           className="cursor-pointer text-gray-400"
-          onClick={() => setIsOpen(false)}
+          onClick={() => {
+            setIsOpen(false);
+            document.body.classList.remove("overflow-hidden");
+          }}
         />
       </div>
-      <div className="p-5 w-full h-full overflow-x-auto space-y-5">
+      <div className="p-5 w-full h-full space-y-5 overflow-auto">
         {products.length ? (
           products.map((item) => {
             return (
               <div className="text-gray-900 flex gap-3">
                 <img src={item.img} className="h-20 w-20" alt="" />
                 <div className="justify-between flex w-full">
-                  <div className="flex lg:flex-col">
-                    <h1 className="text-lg font-medium w-36 truncate">
+                  <div className="flex flex-col">
+                    <h1 className="lg:text-lg font-medium w-36 truncate">
                       {item.title}
                     </h1>
-                    <p className="text-gray-500 text-sm">{item.category}</p>
-                    <p className="mt-auto text-gray-500 text-sm">Qty 1</p>
+                    <p className="text-gray-500 text-xs lg:text-sm">
+                      {item.category}
+                    </p>
+                    <p className="mt-auto text-gray-500 text-xs lg:text-sm">
+                      Qty 1
+                    </p>
                   </div>
-                  <div className="flex lg:flex-col">
-                    <p className="text-lg font-medium">
+                  <div className="flex flex-col">
+                    <p className="lg:text-lg font-medium">
                       {rupiahFormater(item.price)}
                     </p>
                     <button
                       onClick={() => dispatch(deleteItem(item.id))}
-                      className="text-red-500 text-sm mt-auto font-medium text-left"
+                      className="text-red-500 text-xs lg:text-sm mt-auto font-medium text-left"
                     >
                       remove
                     </button>

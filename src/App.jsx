@@ -5,15 +5,16 @@ import CustomError from "./components/Error";
 import Layout from "./components/Layout";
 import useAuth from "./hooks/useAuth";
 import useFetch from "./hooks/useFetch";
-import Category from "./pages/Category/Category";
+import CategoryFilterPage from "./pages/CategoryFilterPage";
 import CheckoutPage from "./pages/Checkout/Checkout";
-import Detail from "./pages/Detail/Detail";
 import HomePage from "./pages/HomePage";
+import OrdersPage from "./pages/OrdersPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 
 export default function App() {
-  const { user } = useAuth();
+  const { user, isLogin } = useAuth();
   const { data } = useFetch("/api/cart", user.jwt);
 
   const router = createBrowserRouter([
@@ -27,12 +28,13 @@ export default function App() {
         },
         {
           path: "/product/:slug",
-          element: <Detail />,
+          element: <ProductDetailPage />,
         },
         {
           path: "/products/:categoryid",
-          element: <Category />,
+          element: <CategoryFilterPage />,
         },
+        isLogin && { path: "/orders", element: <OrdersPage /> },
         {
           path: "*",
           element: (
@@ -44,15 +46,11 @@ export default function App() {
         },
       ],
     },
-    {
+    !isLogin && {
       path: "/signin",
       element: <SignInPage />,
     },
-    data?.data[0]?.attributes?.items?.length && {
-      path: "checkout",
-      element: <CheckoutPage />,
-    },
-    {
+    !isLogin && {
       path: "/signup",
       element: <SignUpPage />,
     },

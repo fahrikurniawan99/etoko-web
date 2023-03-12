@@ -6,6 +6,7 @@ import { Form, Formik } from "formik";
 import React, { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import Button from "../../components/Button";
 import PaymentSucces from "../../components/PaymentSucces";
 import useAuth from "../../hooks/useAuth";
 import useCart from "../../hooks/useCart";
@@ -236,7 +237,7 @@ export default function CheckoutPage() {
           return (
             <Form>
               <div className="grid lg:grid-cols-2 container mx-auto gap-16">
-                <div className="">
+                <div className="px-2 lg:px-0">
                   <h1 className="text-lg font-medium text-gray-900 mb-3">
                     Detail Pengiriman
                   </h1>
@@ -269,7 +270,6 @@ export default function CheckoutPage() {
                         }
                       />
                     )}
-                    {/* {values.province ? ( */}
                     {!cityValue ? (
                       <City
                         city={city}
@@ -323,7 +323,7 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <div className="">
-                  <h1 className="text-lg font-medium text-gray-900 mb-3">
+                  <h1 className="text-lg font-medium text-gray-900 mb-3 mx-2 lg:mx-0">
                     Detail Pesanan
                   </h1>
                   <div className="bg-white w-full flex flex-col border text-gray-900">
@@ -335,22 +335,22 @@ export default function CheckoutPage() {
                               <img
                                 src={item.img}
                                 className="h-20 w-20"
-                                alt=""
+                                alt={item.slug}
                               />
                               <div className="justify-between flex w-full">
-                                <div className="flex lg:flex-col">
-                                  <h1 className="text-lg font-medium w-36 truncate">
+                                <div className="flex flex-col">
+                                  <h1 className="lg:text-lg font-medium w-36 truncate">
                                     {item.title}
                                   </h1>
-                                  <p className="text-gray-500 text-sm">
+                                  <p className="text-gray-500 text-xs lg:text-sm">
                                     {item.category}
                                   </p>
-                                  <p className="mt-auto text-gray-500 text-sm">
+                                  <p className="mt-auto text-gray-500 text-xs lg:text-sm">
                                     Qty 1
                                   </p>
                                 </div>
-                                <div className="flex lg:flex-col">
-                                  <p className="text-lg font-medium">
+                                <div className="flex flex-col">
+                                  <p className="lg:text-lg text-sm font-medium">
                                     {rupiahFormater(item.price)}
                                   </p>
                                 </div>
@@ -380,22 +380,22 @@ export default function CheckoutPage() {
                         </div>
                       </div>
                       <div className="flex justify-between mt-3 border-t pt-3">
-                        <p className="text-xl">Total</p>
-                        <p className="text-xl font-medium">
+                        <p className="text-lg lg:text-xl">Total</p>
+                        <p className="text-lg lg:text-xl font-medium">
                           {rupiahFormater(subTotal + deliveryCost.fee)}
                         </p>
                       </div>
-                      <button
+                      <Button
                         disabled={
                           isLoading ||
                           isSubmitting ||
                           Object.keys(errors).length
                         }
                         type={"submit"}
-                        className="bg-gray-900 text-white text-sm h-12 font-medium w-full rounded mt-5 disabled:opacity-30"
+                        className="bg-indigo-900 text-white text-sm h-12 font-medium w-full rounded mt-5 disabled:opacity-30"
                       >
-                        Pilih Pembayaran
-                      </button>
+                        proses pesanan
+                      </Button>
                     </div>
                   </div>
                 </div>

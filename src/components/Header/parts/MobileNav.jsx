@@ -1,6 +1,7 @@
 import {
   Face3Outlined,
   FaceOutlined,
+  GridViewOutlined,
   HomeOutlined,
   Person2Outlined,
 } from "@mui/icons-material";
@@ -26,9 +27,9 @@ const items = [
     url: "/products/2",
   },
   {
-    label: "Account",
-    icon: <Person2Outlined sx={{ fontSize: 30 }} />,
-    url: "/account",
+    label: "Orders",
+    icon: <GridViewOutlined sx={{ fontSize: 30 }} />,
+    url: "/orders",
   },
 ];
 

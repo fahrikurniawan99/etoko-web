@@ -44,14 +44,14 @@ const imgClassName = "w-full h-full object-cover rounded shadow";
 export default function HeroSection() {
   return (
     <section>
-      <div className="lg:flex container mx-auto lg:h-[700px] px-2 lg:px-0">
+      <div className="lg:flex container mx-auto lg:h-[700px] px-2 lg:px-0 mt-8 lg:mt-0">
         <div className="lg:w-[450px] flex flex-col justify-center mb-20">
           <h1 className="text-4xl lg:text-5xl font-bold ">
-            Summer styles <br /> are finally here
+            Get Ready to be Spoiled for Choice
           </h1>
-          <p className="text-gray-500 leading-relaxed tracking-tight lg:text-lg mt-1">
-            This year, our new summer collection will shelter you from the harsh
-            elements of a world a doesn't care if you live or die
+          <p className="text-gray-500 leading-relaxed tracking-tight lg:text-lg mt-3">
+            Browse Our Extensive Collection of Products and Enjoy Unbeatable
+            Prices!
           </p>
           <Button text={"Shop"} className={"mt-5"} />
         </div>
