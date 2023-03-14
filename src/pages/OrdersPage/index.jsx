@@ -12,7 +12,7 @@ export default function OrdersPage() {
   const PAGE_SIZE = 7;
 
   const { isLoading: isLoadingOrders, data: orders } = useFetch(
-    `/api/orders?pagination[page]=${page}&pagination[pageSize]=${PAGE_SIZE}&populate=*`,
+    `/api/orders?pagination[page]=${page}&pagination[pageSize]=${PAGE_SIZE}&populate=*&sort=createdAt:DESC`,
     user.jwt
   );
 
@@ -40,7 +40,7 @@ export default function OrdersPage() {
         )}
       </div>
       {orders && (
-        <div className="mt-auto justify-center flex">
+        <div className="mt-16 lg:mt-auto justify-center flex">
           <ReactPaginate
             className="flex gap-2"
             previousClassName="h-10 aspect-square flex justify-center items-center"

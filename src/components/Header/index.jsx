@@ -56,7 +56,7 @@ export default function Header() {
         </div>
         <MobileNav />
         <div className="ml-auto flex items-center gap-5 text-sm">
-          <div className="lg:flex hidden items-center gap-5">
+          <div className="flex items-center gap-3">
             {isLogin ? (
               <Link to={`/orders`} className="text-gray-500">
                 Your orders
@@ -80,23 +80,6 @@ export default function Header() {
               </button>
             )}
           </div>
-          {isLogin ? (
-            <button
-              className="text-red-500 font-medium lg:hidden"
-              onClick={logoutHandler}
-            >
-              Logout
-            </button>
-          ) : (
-            <>
-              <Link to={`/signin`} className="text-gray-700">
-                Sign In
-              </Link>
-              <Link to={`/signup`} className="text-gray-700">
-                Sign Up
-              </Link>
-            </>
-          )}
           <div className="flex items-center gap-1">
             <ShoppingBagOutlined
               className="text-gray-400 cursor-pointer hover:text-gray-800"
