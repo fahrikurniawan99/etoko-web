@@ -1,9 +1,11 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import useScrollTop from "../../hooks/useScrollTop";
 import Footer from "../Footer";
 import Header from "../Header";
 
 export default function Layout() {
+    useScrollTop();
   return (
     <>
       <Header />

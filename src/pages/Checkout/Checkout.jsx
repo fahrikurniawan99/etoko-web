@@ -10,6 +10,7 @@ import Button from "../../components/Button";
 import PaymentSucces from "../../components/PaymentSucces";
 import useAuth from "../../hooks/useAuth";
 import useCart from "../../hooks/useCart";
+import useScrollTop from "../../hooks/useScrollTop";
 import makeRequest from "../../lib/axiosInstance";
 import { checkoutSchema } from "../../lib/schema";
 import { clearCart } from "../../redux/cart/cartSlice";
@@ -139,6 +140,8 @@ export default function CheckoutPage() {
   const [provinceValue, setProvinceValue] = useState(null);
   const [cityValue, setCityValue] = useState(null);
   const dispatch = useDispatch();
+
+    useScrollTop();
 
   const getProvince = useCallback(async () => {
     const response = await axios.get(

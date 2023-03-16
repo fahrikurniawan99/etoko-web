@@ -5,6 +5,7 @@ import CustomError from "./components/Error";
 import Layout from "./components/Layout";
 import useAuth from "./hooks/useAuth";
 import useFetch from "./hooks/useFetch";
+import useScrollTop from "./hooks/useScrollTop";
 import CategoryFilterPage from "./pages/CategoryFilterPage";
 import CheckoutPage from "./pages/Checkout/Checkout";
 import HomePage from "./pages/HomePage";
